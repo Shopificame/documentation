@@ -2981,6 +2981,16 @@ By default, field nodes are replaced by a `span` containing their formatted valu
 `widget` attribute is specified, in which case their rendering and behavior depends on the
 corresponding widget.
 
+.. note::
+   A field rendered as a `span` ignores the attributes handled by field widgets, such as
+   :ref:`decorations <reference/javascript_reference/field_decoration>` (`decoration-<style>`). To
+   apply them, set the `widget` attribute.
+
+   .. code-block:: xml
+
+      <field name="date_deadline" widget="date"
+             decoration-danger="is_late"/>
+
 See the :ref:`Field section <reference/js/widgets>` to discover
 various widgets and their options.
 

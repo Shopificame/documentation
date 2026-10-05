@@ -813,19 +813,36 @@ Date Range (`daterange`)
             <field name="start_date" widget="daterange" options="{'end_date_field': 'end_date'}" />
 
 Relative Date (`relative_date`)
-    This widget can be used on date and datetime fields. In readonly, it displays
-    a human-readable relative calendar string computed from the difference between
-    the field value and today (e.g. *"yesterday"*, *"today"*, *"in 3 days"*,
-    *"next month"*). The exact format depends on the magnitude of the difference:
+    This widget can be used on date and datetime fields. In readonly, it displays a
+    human-readable relative calendar string computed from the difference between the field value
+    and today (e.g. *"Yesterday"*, *"Today"*, *"In 3 days"*), with the date as a tooltip. The unit
+    depends on the magnitude of the difference:
 
-    - Within ±30 days: the unit is forced to *days* (e.g. *"in 5 days"*, *"3 days ago"*).
-    - Between 31 and 99 days: Luxon picks the most appropriate unit automatically
-      (e.g. *"next month"*, *"2 months ago"*).
-    - Beyond ±99 days: the widget falls back to the formatted date string.
+    - Less than two weeks: *days* (e.g. *"In 13 days"*, *"8 days ago"*).
+    - From the start of the previous calendar month to the end of the next one: *weeks* (e.g.
+      *"In 3 weeks"*).
+    - Less than two years: *months* (e.g. *"2 months ago"*, *"In 13 months"*).
+    - Beyond: *years* (e.g. *"In 3 years"*).
+
+    By default, past dates are displayed with the `bf` and `danger` decorations, and today with the
+    `bf` and `warning` decorations. No decoration is applied to archived records when the view
+    loads the `active` field.
 
     In edit mode the widget falls back to a regular date/datetime field.
 
     - Supported field types: `date`, `datetime`
+
+    Options:
+
+    - `classes`: maps :ref:`decorations <reference/javascript_reference/field_decoration>` to
+      Python expressions evaluated with `days` (the difference with today, negative in the past)
+      and `record`. It replaces the default
+      `{'bf': 'days <= 0', 'danger': 'days < 0', 'warning': 'days == 0'}`.
+
+        .. code-block:: xml
+
+            <field name="date_deadline" widget="relative_date"
+                   options="{'classes': {'warning': 'days &gt;= 0 and days &lt; 7'}}"/>
 
 Monetary (`monetary`)
     This is the default field type for fields of type `monetary`. It is used to
